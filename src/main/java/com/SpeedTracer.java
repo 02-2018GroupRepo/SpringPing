@@ -1,29 +1,31 @@
 package com;
 
-import jdk.nashorn.internal.runtime.ECMAException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class SpeedTracer {
+class SpeedTracer extends Thread {
 
-    SpeedTracer() {
+    private String ipAddress;
+
+    SpeedTracer(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
-    static String getRouteSpeed(String ipAddress) {
+    @Override
+    public void run() {
         List<String> output = new ArrayList<String>();
-        StringBuilder stringBuilder = new StringBuilder();
-        String s = null;
+        String s;
 
         try {
             Process p = Runtime.getRuntime().exec("ping -c 5 -A " + ipAddress);
-            if (!p.waitFor(5000, TimeUnit.MILLISECONDS)) {
+            if (!p.waitFor(1250, TimeUnit.MILLISECONDS)) {
                 //timeout - kill the process.
-                p.destroy(); // consider using destroyForcibly instead
+                p.destroy();
             }
 
             BufferedReader stdInput = new BufferedReader(new
@@ -40,7 +42,8 @@ public class SpeedTracer {
 
 
         } catch (IOException e) {
-            return ipAddress + " is unresponsive";
+            System.out.println(ipAddress + " is unresponsive");
+            return;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,11 +53,15 @@ public class SpeedTracer {
         String[] speeds = tokens[3].split("/");
 
 
+        // System.out.println(speeds[1] +" is the average Speed for ip address "+ ipAddress);
 
-       // System.out.println(speeds[1] +" is the average Speed for ip address "+ ipAddress);
+        double milisecs = Double.parseDouble(speeds[1]);
+        double rate = ( 64 * 8)/ (milisecs /1000) /1024;
+        System.out.println(Math.round(rate) +" Mbps is the average Speed for ip address " + ipAddress);
 
-
-        return speeds[1] +" is the average Speed for ip address "+ ipAddress;
     }
+
+/*    static String getRouteSpeed(String ipAddress) {
+        }*/
 
 }
