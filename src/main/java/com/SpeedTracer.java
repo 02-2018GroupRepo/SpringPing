@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 class SpeedTracer extends Thread {
 
     private String ipAddress;
+    private String speed;
 
     SpeedTracer(String ipAddress) {
         this.ipAddress = ipAddress;
@@ -42,7 +43,7 @@ class SpeedTracer extends Thread {
 
 
         } catch (IOException e) {
-            System.out.println(ipAddress + " is unresponsive");
+            speed = "down";
             return;
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,9 +57,13 @@ class SpeedTracer extends Thread {
         // System.out.println(speeds[1] +" is the average Speed for ip address "+ ipAddress);
 
         double milisecs = Double.parseDouble(speeds[1]);
-        double rate = ( 64 * 8)/ (milisecs /1000) /1024;
-        System.out.println(Math.round(rate) +" Mbps is the average Speed for ip address " + ipAddress);
+        double rate = (64 * 8) / (milisecs / 1000) / 1024;
+        speed = Math.round(rate) + " Mbps";
 
+    }
+
+    public String getSpeed() {
+        return speed;
     }
 
 /*    static String getRouteSpeed(String ipAddress) {
