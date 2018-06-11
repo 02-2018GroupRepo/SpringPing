@@ -12,6 +12,10 @@ class SpeedTracer extends Thread {
 
     private String ipAddress;
 
+
+
+    private String speed;
+
     SpeedTracer(String ipAddress) {
         this.ipAddress = ipAddress;
     }
@@ -57,8 +61,11 @@ class SpeedTracer extends Thread {
 
         double milisecs = Double.parseDouble(speeds[1]);
         double rate = ( 64 * 8)/ (milisecs /1000) /1024;
-        System.out.println(Math.round(rate) +" Mbps is the average Speed for ip address " + ipAddress);
+        speed = Math.round(rate) +" Mbps is the average Speed for ip address " + ipAddress;
 
+    }
+    public String getSpeed() {
+        return speed;
     }
 
 /*    static String getRouteSpeed(String ipAddress) {
