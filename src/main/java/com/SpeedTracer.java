@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 class SpeedTracer extends Thread {
 
+
     private String ipAddress;
     private String speed;
 
@@ -61,8 +62,12 @@ class SpeedTracer extends Thread {
         speed = Math.round(rate) + " Mbps";
 
     }
+     String getIpAddress() {
+        return ipAddress;
+    }
 
-    public String getSpeed() {
+
+     String getSpeed() {
         return speed;
     }
 
